@@ -1,6 +1,6 @@
 # -------------------------------------
 # -------       FUNCTIONS       -------
-# -------------------------------------
+# ------------------------------
 
 function ModifyXmlParameters([string]$xmlPath, [string] $site, [string] $physPath, [string] $vdir, [string] $appPool){
   $params = new-object System.Xml.XmlDocument
@@ -51,7 +51,7 @@ function AddToPath([string] $item){
   $OldPath=(Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).Path;
   if ($OldPath | Select-String -SimpleMatch $item) { return ''; }
   $NewPath="$OldPath;$item"
-  Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH –Value $NewPath
+  Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH â€“Value $NewPath
   return $LastExitCode
 }
 
