@@ -1,0 +1,81 @@
+<parameters>
+	<applications>
+		<application type="web" layer="FrontEnd">
+			<webSiteName>ABEnterprise</webSiteName>
+			<webSitePhysicalPath>c:\inetpub\ABEnterprise</webSitePhysicalPath>
+			<useSSL name="wsHttpBinding">no</useSSL>
+			
+			<virtualDirName>Mapping4</virtualDirName>
+			<appPoolName>MappingAnalysis4</appPoolName>
+			<appPoolNumerOfWorkers>2</appPoolNumerOfWorkers>
+			
+			<webConfigProtectedSections>
+				<entry path="system.web/machineKey"/>
+			</webConfigProtectedSections>
+			
+			<modifyServiceAddress>
+				<entry>http://iplb:8080/Impact.ServiceV4</entry>
+				<entry serviceName="ModulesDashboardWebService.svc">http://iplb:8080/abEnterprise.Dashboard</entry>
+			</modifyServiceAddress>
+			
+			<setUpUrlRewrites> 
+				<entry ruleName="RouteStaticMap">http://iplb:8080/Impact.ServiceV4/Handlers/{R:1}</entry>    
+			</setUpUrlRewrites>
+			
+			<webConfigRewrites>
+				<entry path="appSettings/add" keyName="key" keyValue="Realm" parameter="value">extranet</entry>
+				<entry path="appSettings/add" keyName="key" keyValue="TileServerUrl" parameter="value">https://aonone/MappingTile4</entry>
+				<entry path="appSettings/add" keyName="key" keyValue="IfFloodTileServerUrl" parameter="value">https://t{subdomain}.www2.aonbenfield.com/IFFloodTiles</entry>
+				<entry path="appSettings/add" keyName="key" keyValue="AddressSuggestionServerUrl" parameter="value">https://aonone/GeoService</entry>
+				<entry path="appSettings/add" keyName="key" keyValue="AddressSuggestionKey" parameter="value">@@AddressSuggestionKey@@</entry>
+				<entry path="appSettings/add" keyName="key" keyValue="HandlersUrl" parameter="value">Mapping4</entry>
+				<entry path="abEnterpriseAuth" parameter="defaultDomain">extranet</entry>
+				<entry path="abEnterpriseAuth" parameter="loginPageUrl">/LoginPage/</entry>
+				<entry path="bing" parameter="key">@@BingKey@@</entry>
+			</webConfigRewrites>
+			
+			<requiresRestPermissions>
+				<entry fileName="REST" groupName="IIS_IUSRS" />
+			</requiresRestPermissions>
+			
+			<eventSourceName>eventSourceName</eventSourceName>
+		</application>
+		
+		<application type="web" layer="BackEnd">
+			<webSiteName>ABEnterprise</webSiteName>
+			<webSitePhysicalPath>c:\inetpub\ABEnterprise</webSitePhysicalPath>
+			<useSSL name="wsHttpBinding">no</useSSL>
+
+			<virtualDirName>Impact.ServiceV4</virtualDirName>
+			<appPoolName>Impact.ServiceV4</appPoolName>
+			<appPoolNumerOfWorkers>2</appPoolNumerOfWorkers>
+
+			<impersonatedUser>@@impersonatedUser@@</impersonatedUser>
+			<impersonatedUserPassword>@@impersonatedUserPassword@@</impersonatedUserPassword>
+			
+			<webConfigProtectedSections>
+				<entry path="system.web/machineKey"/>
+				<entry path="system.web/identity"/>
+			</webConfigProtectedSections>
+	
+			<webConfigRewrites>
+				<entry path="appSettings/add" keyName="key" keyValue="Realm" parameter="value">extranet</entry>
+				<entry path="appSettings/add" keyName="key" keyValue="GeoServerUrl" parameter="value">https://aonone/GeoService</entry>
+				<entry path="bing" parameter="key">@@BingKey@@</entry>
+			</webConfigRewrites>
+	
+			<connectionsStrings sqlServer="tdbs" user="" password="" applicationName="abEnterprise Mapping4 Web Service" useRoot="true" useExternalConfig="true">
+				<connectionsString name ="Cache" catalog="CvCache"/>
+				<connectionsString name ="Core" catalog="CvCore"/> 
+				<connectionsString name ="Common" catalog="CvCommon"/> 
+				<connectionsString name ="Shape" catalog="CvShape"/> 
+				<connectionsString name ="SrmCore" catalog="SrmCore"/> 
+				<connectionsString name ="Log" catalog="CvLog"/> 
+			</connectionsStrings>
+			
+			<aonBenfieldDistanceToLine>http://iplb:8080/IPOD.DistanceToLineService/Processor.svc</aonBenfieldDistanceToLine>
+			
+			<eventSourceName>eventSourceName</eventSourceName>
+		</application>
+	</applications>
+</parameters>
